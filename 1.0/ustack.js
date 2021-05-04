@@ -239,7 +239,7 @@ let version;
       /** NAVIGATOR && DEVICE AGENT
       * SYSTEM NAME : navigator && navigator.userAgent
       **/
-      Ub.navigator = function (type) {
+      this.navigator = function (type) {
          if (type == "agent") {
             let device = "Unknown";
             const ua = {
