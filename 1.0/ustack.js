@@ -299,7 +299,7 @@ let version;
 
    }).call(Ubeyin.prototype);
    (function() {
-      if ("undefined" == typeof Ubeyin) throw new TypeError("Ustack JS are required.");
+      //if ("undefined" == typeof Ubeyin) throw new TypeError("Ustack JS are required.");
    }());
    if (typeof module === 'object' && typeof module.exports === 'object') {
       module.exports = Ubeyin;
