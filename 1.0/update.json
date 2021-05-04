@@ -1,0 +1,14 @@
+{
+  "latest": {
+    "version":"1.0"
+  },
+  "all":[{
+    "version":"1.0",
+    "features":["Fetch URLS","Tracks Current Location lat, long and name","Handle elements in many size of window","Load a function on window.","Copy To Clipboard","Get weathers and 3 day forecast","Get navigator agent"],
+    "date": "May 2021"
+  }],
+  "name":"Ustack JS",
+  "urls":"https://ubeyin.github.io/ustack/1.0/ustack.js",
+  "author":"Ubeyin LLC",
+  "license":"Apache 2.0, MIT, Creative Commons international license"
+}
