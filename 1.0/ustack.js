@@ -3,23 +3,23 @@
    Version : 1.0 (first)
    Powered by : Ubeyin LLC
    Licensed under : Apache 2.0, Creative Commons
-   Created by : mohammad sefatullah on April 2021
+   Created by : mohammad sefatullah on May 2021
 
  # New features :
-   * Fetch URLS,
-   * Tracks Current Location lat, long and name
-   * Handle elements in many size of windows,
+   * Fetch URLS.
+   * Tracks Current Location lat, long and name.
+   * Handle elements in many size of windows.
    * Load a function on window.
-   * Get weathers and 3 day forecast
-   * Copy To Clipboard Function
-   * Get Navigator Device Agent
+   * Copy To Clipboard Function.
+   * Get weathers and 3 day forecast.
+   * Get Navigator Device Agent.
 
  # More features :
    * Using functions 'new Ubeyin()' or Ub
 */
-/*
-   if ("undefined" == typeof Ubeyin) throw new TypeError("There have requires Ubeyin query.");
-*/
+
+if ("undefined" == typeof Ubeyin) throw new TypeError("Ustack JS are required.");
+
 
 let Ubeyin, Ub;
 let version;
