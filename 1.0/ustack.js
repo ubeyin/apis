@@ -302,17 +302,7 @@ let version;
 
    }).call(Ubeyin.prototype);
    (function() {
-      Ub.fetch("https://ubeyin.github.io/ustack/1.0/update.json").then("json()", function (data) {
-         let latestV = data.latest.version;
-
-         if (data) {
-            if (latestV < version) {
-               return console.log("new VersionUpdate: A latest version "+latestV+" is available. Use the new version for explore more. Your current version is "+version);
-            } else {
-               // no updates
-            }
-         }
-      });
+      
    }());
    if (typeof module === 'object' && typeof module.exports === 'object') {
       module.exports = Ubeyin;
