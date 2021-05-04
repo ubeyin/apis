@@ -63,7 +63,9 @@ let version;
                   return event(response);
                });
                xhr.catch(function(e) {
-                  return error();
+                  if (error) {
+                     return error();
+                  }
                });
             },
          };
@@ -115,7 +117,9 @@ let version;
                };
                if ('geolocation' in navigator === false) {
                   console.error(new TypeError('Geolocation is not supported by your browser.'));
-                  return error('Geolocation is not supported by your browser.');
+                  if (error) {
+                     return error('Geolocation is not supported by your browser.');
+                  }
                }
                return navigator.geolocation.getCurrentPosition(function (position) {
                   Ub.fetch("https://us1.locationiq.com/v1/reverse.php", {
@@ -125,12 +129,19 @@ let version;
                      format: "json"
                   }).then("json()", function(data) {
                      result = data.display_name;
-                     return load(position.coords.latitude, position.coords.longitude, data.display_name, position);
-                  }, function(e) {
-                     return error(position.coords.latitude, position.coords.longitude, "Not found", position);
-                  });
+                     if (load) {
+                        return load(position.coords.latitude, position.coords.longitude, data.display_name, position);
+                     }
+                  },
+                     function(e) {
+                        if (error) {
+                           return error(position.coords.latitude, position.coords.longitude, "Not found", position);
+                        }
+                     });
                }, function(e) {
-                  return error(getPositionErrorCode(e.code), getPositionErrorMessage(e.code));
+                  if (error) {
+                     return error(getPositionErrorCode(e.code), getPositionErrorMessage(e.code));
+                  }
                });
             },
          };
@@ -141,56 +152,58 @@ let version;
       **/
       this.window = {
          onsize: function(load) {
-            let mobile,
-            tablet,
-            laptop,
-            ipad,
-            dekstop,
-            otherwise;
-            mobile = load.mobile;
-            tablet = load.tablet;
-            laptop = load.laptop;
-            ipad = load.ipad;
-            dekstop = load.dekstop;
-            otherwise = load.other;
+            if (load) {
+               let mobile,
+               tablet,
+               laptop,
+               ipad,
+               dekstop,
+               otherwise;
+               mobile = load.mobile;
+               tablet = load.tablet;
+               laptop = load.laptop;
+               ipad = load.ipad;
+               dekstop = load.dekstop;
+               otherwise = load.other;
 
-            if (mobile || tablet || laptop || ipad || dekstop || otherwise) {
-               let onl = function() {
-                  if (window.innerWidth <= 400) {
-                     if (mobile) {
-                        // mobile window
-                        mobile(window);
+               if (mobile || tablet || laptop || ipad || dekstop || otherwise) {
+                  let onl = function() {
+                     if (window.innerWidth <= 400) {
+                        if (mobile) {
+                           // mobile window
+                           mobile(window);
+                        }
+                     } else if (window.innerWidth <= 870 && window.innerWidth >= 400) {
+                        if (tablet) {
+                           // tablet window
+                           tablet(window);
+                        }
+                     } else if (window.innerWidth <= 970 && window.innerWidth >= 870) {
+                        if (ipad) {
+                           // ipad window
+                           ipad(window);
+                        }
+                     } else if (window.innerWidth <= 1100 && window.innerWidth >= 970) {
+                        if (laptop) {
+                           // laptop window
+                           laptop(window);
+                        }
+                     } else if (window.innerWidth <= 1200 && window.innerWidth >= 1100) {
+                        if (dekstop) {
+                           // dekstop window
+                           dekstop(window);
+                        }
+                     } else {
+                        if (otherwise) {
+                           // other window
+                           otherwise(window);
+                        }
                      }
-                  } else if (window.innerWidth <= 870 && window.innerWidth >= 400) {
-                     if (tablet) {
-                        // tablet window
-                        tablet(window);
-                     }
-                  } else if (window.innerWidth <= 970 && window.innerWidth >= 870) {
-                     if (ipad) {
-                        // ipad window
-                        ipad(window);
-                     }
-                  } else if (window.innerWidth <= 1100 && window.innerWidth >= 970) {
-                     if (laptop) {
-                        // laptop window
-                        laptop(window);
-                     }
-                  } else if (window.innerWidth <= 1200 && window.innerWidth >= 1100) {
-                     if (dekstop) {
-                        // dekstop window
-                        dekstop(window);
-                     }
-                  } else {
-                     if (otherwise) {
-                        // other window
-                        otherwise(window);
-                     }
-                  }
-               };
-               if (document.body) onl();
-               else window.onload = onl;
-            } else {}
+                  };
+                  if (document.body) onl();
+                  else window.onload = onl;
+               } else {}
+            }
          }
       };
       /** LOAD A FUNCTION
@@ -263,34 +276,46 @@ let version;
          }
       };
       this.weather = function ( {
-         key, value, unit
+         type, key, value, unit, days
       }) {
          if (!key) {
-            key = "8a1362221e524488b3e112953200305";
+            key = "64d768ea2ce5401588882604210405";
          }
          if (unit == 1) {
             unit = "metric";
          }
+         if (unit == 2) {
+            unit == "imperial"
+         }
+         if (!days) {
+            days = 3;
+         }
+         if (!type) {
+            type = "forecast.json";
+         }
          let XMLHttp = new XMLHttpRequest();
-         XMLHttp.open("GET", "https://api.weatherapi.com/v1/forecast.json?key="+key+"&"+value+"&units="+unit+"&days=3");
+         XMLHttp.open("GET", "https://api.weatherapi.com/v1/"+type+"?key="+key+"&"+value+"&units="+unit+"&aqi=yes&alert=yes&days="+days);
          let fn = {
             then: function( {
-               load, error, hour: {
-                  day1, day2, day3
-               }
+               load, error, hour
             }) {
                XMLHttp.onload = function() {
                   if (XMLHttp.status == 200) {
-                     load(JSON.parse(XMLHttp.responseText));
-                     if(hour){
-                     for (var i = 0; i <= 24; i++) {
-                        day1(i, JSON.parse(XMLHttp.responseText).forecast.forecastday[0]);
-                        day2(i, JSON.parse(XMLHttp.responseText).forecast.forecastday[1]);
-                        day3(i, JSON.parse(XMLHttp.responseText).forecast.forecastday[2]);
-                     }
+                     if (load) {
+                        load(JSON.parse(XMLHttp.responseText));
                      }
                   } else {
-                     return error(XMLHttp.status);
+                     if (error) {
+                        return error(XMLHttp.status);
+                     }
+                  }
+                  if (XMLHttp.status == 200) {
+                     if (hour) {
+                        // i <= 24 per 1 day
+                        for (var i = 0; i <= 24; i++) {
+                           hour(i, JSON.parse(XMLHttp.responseText).forecast.forecastday);
+                        }
+                     }
                   }
                }
             },
