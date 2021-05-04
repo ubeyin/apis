@@ -282,10 +282,12 @@ let version;
                XMLHttp.onload = function() {
                   if (XMLHttp.status == 200) {
                      load(JSON.parse(XMLHttp.responseText));
+                     if(hour){
                      for (var i = 0; i <= 24; i++) {
                         day1(i, JSON.parse(XMLHttp.responseText).forecast.forecastday[0]);
                         day2(i, JSON.parse(XMLHttp.responseText).forecast.forecastday[1]);
                         day3(i, JSON.parse(XMLHttp.responseText).forecast.forecastday[2]);
+                     }
                      }
                   } else {
                      return error(XMLHttp.status);
