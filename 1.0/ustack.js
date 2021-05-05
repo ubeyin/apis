@@ -78,7 +78,10 @@ let version;
       **/
       this.gps = function() {
          let fn = {
-            then: function (load, error) {
+            then: function ( {
+               load,
+               error
+            }) {
                const getPositionErrorCode = code => {
                   let codes;
                   switch (code) {
