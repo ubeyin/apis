@@ -6,5 +6,5 @@
  "license":"Apache 2.0",
  "keywords":["Development","Framworks","Ubeyin js"],
  "repository": { "type": "git", "url": "https://github.com/ubeyin/apis.git" },
- "browserslist": [ "not ie >= 9" ]
+ "browserslist": [ "not ie <= 9" ]
 }
