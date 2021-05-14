@@ -1,14 +1,7 @@
 {
-  "latest": {
-    "version": "1.0"
-  },
-  "all":[{
-    "version": "1.0",
-    "features":["Fetch URLS","Tracks Current Location lat, long and name","Handle elements in many size of window","Load a function on window.","Copy To Clipboard Function","Get weathers and 3 day forecast","Get Navigator Agent"],
-    "date": "May 2021"
-  }],
-  "name":"Ubeyin Dev JS",
-  "urls":"https://ubeyin.github.io/apis/1.0/dev.js",
-  "author":"Ubeyin LLC",
-  "license":"Apache 2.0, MIT, Creative Commons international license"
+ "name":"Ubeyin Dev JS",
+ "version":"1.0",
+ "description":"A mini framworks for website development",
+ "author":"Ubeyin LLC <ubeyin.com@gmail.com> (https://ubeyin.github.io)",
+ "license":"Apache 2.0",
 }
