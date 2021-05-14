@@ -226,7 +226,7 @@ let version;
       }
     }
     /** COPY TO CLIPBOARD
-    * SYSTEM NAME : window.clipboardData && document.execCommand
+    * SYSTEM NAME : window.clipboardData && document.execCommand && navigator.clipboardData
     *  SUPPORTS : (1) IE+, (2) Chrome 42+, Edge 12+, Firefox 41+, IE 9+, Opera 29+, Safari 10+, (3) IE 10+, Chrome 43+, Firefox 41+, and Opera 29+
     **/
     this.copyToClipboard = function(_a, load) {
