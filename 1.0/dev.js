@@ -1,5 +1,5 @@
 /*
-   Ustack JS (Ubeyin Stack Development JS)
+   Ubeyin Dev JS (Ubeyin Development Frameworks)
    Version : 1.0 (first)
    Powered by : Ubeyin LLC
    Licensed under : Apache 2.0, Creative Commons
