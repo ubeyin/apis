@@ -4,4 +4,6 @@
  "description":"A mini framworks for website development",
  "author":"Ubeyin LLC <ubeyin.com@gmail.com> (https://ubeyin.github.io)",
  "license":"Apache 2.0",
+ "keywords":["Development","Framworks","Ubeyin js"],
+ "repository": { "type": "git", "url": "https://github.com/ubeyin/apis/dev.git" }
 }
