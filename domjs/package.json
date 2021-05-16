@@ -1,10 +1,10 @@
 {
- "name":"Ubeyin Dev JS",
+ "name":"DOM JS",
  "version":"1.0",
- "description":"A mini framworks for website development",
+ "description":"A mini DOM and JS related framworks",
  "author":"Ubeyin LLC <ubeyin.com@gmail.com> (https://ubeyin.github.io)",
  "license":"Apache 2.0",
- "keywords":["Development","Framworks","Ubeyin js"],
+ "keywords":["Document Model JavaScript","Framworks","Ubeyin"],
  "repository": { "type": "git", "url": "https://github.com/ubeyin/apis.git" },
  "browserslist": [ "not ie <= 9" ]
 }
