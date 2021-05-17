@@ -10,16 +10,12 @@
 (function(window) {
   "use strict";
 
-  let _DOMJS = true;
+  let _DOM = true;
 
   var cors = "https://cors-anywhere.herokuapp.com/";
 
-  class DOMJS {
-    _DOMJS = true;
+  class DOM {
     constructor(__dom) {
-      this.init = function (__init) {
-        return __init();
-      };
       this.enc = function (_v) {
         return encodeURIComponent(_v);
       };
@@ -70,7 +66,7 @@
               return event(response);
             });
             xhr.catch(function(e) {
-              if (error) {
+              if (error != null && typeof(error) !== undefined) {
                 return error();
               }
             });
@@ -78,30 +74,9 @@
         };
         return fn;
       };
-      this.gps = function ( {
-        load,
-        error
-      }) {
-        const getPositionErrorCode = code => {
-          let codes;
-          switch (code) {
-            case 1:
-              codes = 101;
-              break;
-            case 2:
-              codes = 503;
-              break;
-            case 3:
-              codes = 408;
-              break;
-            default:
-              codes = 500;
-              break;
-          }
-          return codes;
-        };
+      this.gps = function (load,  error) {
         const getPositionErrorMessage = code => {
-          let codes;
+          let message;
           switch (code) {
             case 1:
               message = 'Permission denied.';
@@ -119,36 +94,29 @@
           return message;
         };
         if ('geolocation' in navigator === false) {
-          console.error(new TypeError('Geolocation is not supported by your browser.'));
-          if (error) {
+          if (error != null && typeof(error) !== undefined) {
             return error('Geolocation is not supported by your browser.');
           }
         }
         return navigator.geolocation.getCurrentPosition(function (position) {
-          Ub.fetch("https://us1.locationiq.com/v1/reverse.php", {
-            key: "pk.841faf5c95235f9459953b664d1ec98c",
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-            format: "json"
-          }).then("json()", function(data) {
-            result = data.display_name;
-            if (load) {
+          new DOM().fetch("https://us1.locationiq.com/v1/reverse.php?key=pk.841faf5c95235f9459953b664d1ec98c&lat="+position.coords.latitude+"&lon="+position.coords.longitude+"&format=json").on("json()", function(data) {
+            if (load != null && typeof(load) !== undefined) {
               return load(position.coords.latitude, position.coords.longitude, data.display_name, position);
             }
           },
             function(e) {
-              if (error) {
-                return error(position.coords.latitude, position.coords.longitude, "Not found", position);
+              if (error != null && typeof(error) !== undefined) {
+                return load(position.coords.latitude, position.coords.longitude, "Not found", position);
               }
             });
         }, function(e) {
-          if (error) {
-            return error(getPositionErrorCode(e.code), getPositionErrorMessage(e.code));
+          if (error != null && typeof(error) !== undefined) {
+            return error(getPositionErrorMessage(e.code));
           }
         });
       };
       this.viewport = function(load) {
-        if (load) {
+        if (load != null && typeof(load) !== undefined) {
           let mobile,
           tablet,
           laptop,
@@ -216,74 +184,50 @@
         }
       };
 
-      this.agent = function () {
-        let device = "Unknown";
-        const ua = {
-          "Generic Linux": /Linux/i,
-          "Android": /Android/i,
-          "BlackBerry": /BlackBerry/i,
-          "Bluebird": /EF500/i,
-          "Chrome OS": /CrOS/i,
-          "Datalogic": /DL-AXIS/i,
-          "Honeywell": /CT50/i,
-          "iPad": /iPad/i,
-          "iPhone": /iPhone/i,
-          "iPod": /iPod/i,
-          "macOS": /Macintosh/i,
-          "Windows": /IEMobile|Windows/i,
-          "Zebra": /TC70|TC55/i,
-          "Opera": /Opera Mini/i
-        };
-        Object.keys(ua).map(v => navigator.userAgent.match(ua[v]) && (device = v));
-        return device;
-      };
-
       this.weather = function ( {
-        type, key, value, unit, days
+        key, type, unit, days, value
       }) {
-        if (!key) {
-          key = "64d768ea2ce5401588882604210405";
-        }
-        if (unit == 1) {
-          unit = "metric";
-        }
+        let XMLHttp = new XMLHttpRequest();
+
+        key = "64d768ea2ce5401588882604210405";
+        unit = "metric";
         if (unit == 2) {
           unit == "imperial"
         }
-        if (!days) {
-          days = 3;
+        if (unit == 1) {
+          unit == "metric"
         }
-        if (!type) {
-          type = "forecast.json";
+        days = 3;
+        type = "forecast.json";
+        try {
+          XMLHttp.open("GET", "https://api.weatherapi.com/v1/"+type+"?key="+key+"&q="+value+"&units="+unit+"&aqi=yes&alert=yes&days="+days);
+        } catch(e) {
+          XMLHttp.open("GET", "https://api.weatherapi.com/v1/forecast?key=64d768ea2ce5401588882604210405&q="+value+"&units=metric&aqi=yes&alert=yes&days=3");
         }
-        let XMLHttp = new XMLHttpRequest();
-        XMLHttp.open("GET", "https://api.weatherapi.com/v1/"+type+"?key="+key+"&"+value+"&units="+unit+"&aqi=yes&alert=yes&days="+days);
         let fn = {
-          then: function( {
-            load, error, hour
-          }) {
+          on: function(types, fun) {
             XMLHttp.onload = function() {
               if (XMLHttp.status == 200) {
-                if (load) {
-                  load(JSON.parse(XMLHttp.responseText));
+                if (types == "load" && fun !== null) {
+                  return fun(JSON.parse(XMLHttp.responseText));
                 }
               } else {
-                if (error) {
-                  return error(XMLHttp.status);
+                if (types == "error" && fun !== null) {
+                  return fun(XMLHttp.status);
                 }
               }
               if (XMLHttp.status == 200) {
-                if (hour) {
+                if (types == "forecast" && fun !== null) {
                   // i <= 24 per 1 day
                   for (var i = 0; i <= 24; i++) {
-                    hour(i, JSON.parse(XMLHttp.responseText).forecast.forecastday);
+                    return fun(i, JSON.parse(XMLHttp.responseText).forecast.forecastday);
                   }
                 }
               }
             }
           },
         };
-        XMLHttp.send();
+        XMLHttp.send(null);
         return fn;
       };
     }
@@ -292,13 +236,13 @@
   (function() {}());
 
   if (typeof module === 'object' && typeof module.exports === 'object') {
-    module.exports = DOMJS;
+    module.exports = DOM;
   } else if (typeof define === 'function' && define.amd) {
     define([], function () {
-      return DOMJS;
+      return DOM;
     });
   } else {
-    window.DOMJS = DOMJS;
+    window.DOM = DOM;
   }
 } (typeof window !== 'undefined' ? window: this));
 let $;
@@ -492,7 +436,7 @@ $ = function (_el) {
       return false;
     }
   } finally {
-    if (load) return load(_a, _tag);
+    if (load != null && typeof(load) !== undefined) return load(_a, _tag);
   }
 };
   this.cursor = function (_val) {
