@@ -59,7 +59,7 @@
         var valOf = function (element) {
           try {
             return element.value,
-            element.innerHTML;
+            element.innerText;
           } catch(e) {}
         }; var val = function(element, v) {
           if (v) {
