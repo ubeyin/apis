@@ -41,7 +41,14 @@
           }
         };
         try {
-          var _data = document.querySelectorAll(this.data.trim());
+          var _data;
+          try {
+            _data = document.querySelectorAll(this.data.trim());
+          } catch(e) {
+            try {
+              _data = element.trim();
+            } catch(e) {}
+          }
           for (var i = 0; i <= _data.length; i++) {
             let el = _data[i]; for (var x in _obj) {
               if (valOf(el).includes(x) == true) {
@@ -71,7 +78,11 @@
         };
         try {
           _val = valOf(document.querySelector(this.data)).trim();
-        } catch(e) {}
+        } catch(e) {
+          try {
+            _val = this.data.trim();
+          } catch(e) {}
+        }
         try {
           /* copyToClipboard : #1*/ var valarea = document.createElement("textarea"); valarea.innerText = _val; valarea.style.opacity = 0; valarea.style.position = "fixed"; valarea.style.left = "-1000px"; document.body.appendChild(valarea); valarea.select(); valarea.disabled = true; document.execCommand("copy"); document.body.removeChild(valarea);
           /* copyToClipboard : #2 */ if (!navigator.clipboard) {
@@ -93,7 +104,11 @@
           };
           try {
             val = valOf(document.querySelector(this.data)).trim();
-          } catch(e) {}
+          } catch(e) {
+            try {
+              val = this.data.trim();
+            }catch(e) {}
+          }
           file = new Blob([val], {
             type: format ? format: "octet/stream"
           }); a.href = URL.createObjectURL(file); a.innerHTML = name; a.download = name; var func = function() {
@@ -115,7 +130,11 @@
         };
         try {
           _val = valOf(document.querySelector(this.data)).trim();
-        } catch(e) {}
+        } catch(e) {
+          try {
+            _val = this.data.trim();
+          } catch(e) {}
+        }
         try {
           return navigator.share({
             title: title,
@@ -137,7 +156,11 @@
           };
           try {
             _val = valOf(document.querySelector(this.data)).trim();
-          } catch(e) {}
+          } catch(e) {
+            try {
+              _val = this.data.trim();
+            } catch(e) {}
+          }
           var httpObj; var method; if (!method) {
             method = "GET";
           } if (window.XMLHttpRequest) {
@@ -161,9 +184,15 @@
       this.prototype.slide = function (ms, func) {
         try {
           var i,
-          ss,
-          x = document.querySelectorAll(this.data),
-          l = x.length; ss = {}; ss.current = 1; ss.x = x; ss.ondisplaychange = func; if (!isNaN(ms) || ms == 0) {
+          ss;
+          try {
+            x = document.querySelectorAll(this.data);
+          } catch(e) {
+            try {
+              x = this.data;
+            } catch(e) {}
+          }
+          var l = x.length; ss = {}; ss.current = 1; ss.x = x; ss.ondisplaychange = func; if (!isNaN(ms) || ms == 0) {
             ss.milliseconds = ms;
           } else {
             ss.milliseconds = 1000;
@@ -217,7 +246,14 @@
       };
       this.prototype.sort = function(xy) {
         try {
-          var a = document.querySelector(this.data);
+          var a;
+          try {
+            a = document.querySelector(this.data);
+          } catch(e) {
+            try {
+              a = this.data;
+            } catch(e) {}
+          }
           var cc; var res; var j; var k; var v1; var v2; var b; var y;
           for (j = 0; j < 2; j++) {
             cc = 0; y = 1; while (y == 1) {
@@ -241,7 +277,11 @@
           let _val;
           try {
             _val = document.querySelectorAll(this.data);
-          } catch(e) {}
+          } catch(e) {
+            try {
+              _val = this.data;
+            } catch(e) {}
+          }
           for (var i = 0; i <= _val.length; i++) {
             _val[i].focus(); _val[i].setRangeText(val, _val[i].selectionStart, _val[i].selectionEnd, "end");
           }
@@ -260,7 +300,7 @@
             return error(getPositionErrorMessage(e.code));
           });
       };
-      this.prototype.fillByUrl = function(name) {
+      this.prototype.vurl = function(name) {
         window.onload = function() {
           function querySt(ji) {
             hu = window.location.search.substring(1); gy = hu.split("&"); for (i = 0; i < gy.length; i++) {
@@ -278,7 +318,11 @@
             };
             try {
               _val = document.querySelectorAll(this.data);
-            } catch(e) {}
+            } catch(e) {
+              try {
+                _val = this.data;
+              } catch(e) {}
+            }
             for (var i = 0; i < _val.length; i++) {
               return valueOf(_val[i], fieldName);
             }
