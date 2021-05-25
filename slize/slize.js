@@ -185,6 +185,7 @@
         try {
           var i,
           ss;
+          var x;
           try {
             x = document.querySelectorAll(this.data);
           } catch(e) {
@@ -192,13 +193,14 @@
               x = this.data;
             } catch(e) {}
           }
-          var l = x.length; ss = {}; ss.current = 1; ss.x = x; ss.ondisplaychange = func; if (!isNaN(ms) || ms == 0) {
+          var l = x.length; ss = {}; ss.current = 1; ss.x = x; ss.ondisplaychange = func;
+          if (!isNaN(ms) || ms == 0) {
             ss.milliseconds = ms;
           } else {
             ss.milliseconds = 1000;
           } ss.start = function() {
             ss.show(ss.current); if (ss.ondisplaychange) {
-              ss.ondisplaychange();
+              ss.ondisplaychange(ss.current);
             } if (ss.milliseconds > 0) {
               window.clearTimeout(ss.timeout); ss.timeout = window.setTimeout(ss.next, ss.milliseconds);
             }
@@ -217,7 +219,7 @@
           }; ss.start();
           return ss;
         } catch(e) {
-          console.error("Failed to slide!");
+          console.error("Failed to slide!", e);
           return false;
         }
       };
